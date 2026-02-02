@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: branches-api
+    runtime: docker
+    plan: free
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: 60
+    healthCheckPath: /
