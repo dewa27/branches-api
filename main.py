@@ -5,7 +5,7 @@ from typing import List, Optional
 
 app = FastAPI(title="Branches API", version="2.0.0")
 
-# CORS Configuration
+# --- CORS Configuration ---
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -14,10 +14,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Configuration
-API_KEY = "eaae442e-7560-4158-9665-2f0d27c7a082"  # Change this to a secure API key
+# --- Configuration ---
+API_KEY = "your-api-key-here"
 
-# Models
+# --- Models ---
 class Branch(BaseModel):
     branch_id: int
     branch_code: str
@@ -36,6 +36,7 @@ class Skill(BaseModel):
 
 class Teacher(BaseModel):
     teacher_id: int
+    branches: List[int]  # Single row maps to multiple branch IDs
     name: str
     email: str
     phone: str
@@ -43,10 +44,16 @@ class Teacher(BaseModel):
     age: int
     npwp: str
     gender: str
-    region: str
+    country: str
+    province: str
+    city: str
     address: str
     languages: List[str]
     skills: List[Skill]
+
+class TeacherWithAuth(Teacher):
+    username: str
+    password_hash: str
 
 class TeacherCreate(BaseModel):
     name: str
@@ -56,17 +63,19 @@ class TeacherCreate(BaseModel):
     age: int
     npwp: str
     gender: str
-    region: str
+    country: str
+    province: str
+    city: str
     address: str
     languages: List[str]
-    additional_branches: Optional[List[int]] = []
+    branches: List[int]
 
 class TeacherCreateResponse(BaseModel):
     message: str
     teacher_id: int
     assigned_branches: List[int]
 
-# Mock Database
+# --- Mock Database ---
 branches_db = [
     {
         "branch_id": 1,
@@ -91,221 +100,228 @@ branches_db = [
         "city": "Denpasar",
         "address": "Jl. Teuku Umar No. 45, Denpasar",
         "contact": "081234567890"
-    },
-    {
-        "branch_id": 3,
-        "branch_code": "JAKARTA",
-        "branch_name": "Offline Jakarta",
-        "type": "Offline",
-        "category": "Corporate",
-        "country": "Indonesia",
-        "province": "DKI Jakarta",
-        "city": "Jakarta Selatan",
-        "address": "Jl. Sudirman No. 123",
-        "contact": "081234567891"
     }
 ]
 
 skills_db = [
-    {
-        "skill_id": 1,
-        "skill_name": "Python Game"
-    },
-    {
-        "skill_id": 2,
-        "skill_name": "Advanced Lua Coding with Roblox"
-    },
-    {
-        "skill_id": 3,
-        "skill_name": "Web Development"
-    },
-    {
-        "skill_id": 4,
-        "skill_name": "Mobile App Development"
-    }
+    {"skill_id": 1, "skill_name": "Python Game"},
+    {"skill_id": 2, "skill_name": "Advanced Lua Coding with Roblox"},
+    {"skill_id": 3, "skill_name": "Web Development"}
 ]
 
 teachers_db = [
-    {
-        "teacher_id": 101,
-        "branch_id": 1,
-        "name": "Lalu Rudi Setiawan",
-        "email": "rudistiawannn@gmail.com",
-        "phone": "+6281938587824",
-        "birthday": "14 Nov 2001",
-        "age": 24,
-        "npwp": "1234567890",
-        "gender": "Male",
-        "region": "Kota Mataram, Nusa Tenggara Barat, Indonesia",
-        "address": "Mangkung, Lombok Tengah",
-        "languages": ["Indonesian", "English"],
-        "skills": [
-            {
-                "skill_id": 1,
-                "skill_name": "Python Game"
-            }
-        ]
-    },
-    {
-        "teacher_id": 102,
-        "branch_id": 1,
-        "name": "Ani Susanti",
-        "email": "ani.susanti@gmail.com",
-        "phone": "+6281234567890",
-        "birthday": "10 May 1998",
-        "age": 26,
-        "npwp": "0987654321",
-        "gender": "Female",
-        "region": "Kota Mataram, Nusa Tenggara Barat, Indonesia",
-        "address": "Cakranegara, Mataram",
-        "languages": ["Indonesian", "English"],
-        "skills": [
-            {
-                "skill_id": 2,
-                "skill_name": "Advanced Lua Coding with Roblox"
-            }
-        ]
-    },
-    {
-        "teacher_id": 103,
-        "branch_id": 2,
-        "name": "Made Wirawan",
-        "email": "made.wirawan@gmail.com",
-        "phone": "+6281345678901",
-        "birthday": "05 Aug 2000",
-        "age": 25,
-        "npwp": "1122334455",
-        "gender": "Male",
-        "region": "Denpasar, Bali, Indonesia",
-        "address": "Denpasar Selatan",
-        "languages": ["Indonesian", "English", "Balinese"],
-        "skills": [
-            {
-                "skill_id": 3,
-                "skill_name": "Web Development"
-            }
-        ]
-    }
+  {
+    "name": "Budi Santoso",
+    "email": "budi.santoso@email.com",
+    "phone": "+6281122334455",
+    "birthday": "12 May 1990",
+    "age": 35,
+    "npwp": "9988776655",
+    "gender": "Male",
+    "country": "Indonesia",
+    "province": "DKI Jakarta",
+    "city": "Jakarta Selatan",
+    "address": "Jl. Kemang Raya No. 10",
+    "languages": ["Indonesian", "English"],
+    "branches": [1, 3]
+  },
+  {
+    "name": "Siti Aminah",
+    "email": "siti.aminah@email.com",
+    "phone": "+6281223344556",
+    "birthday": "25 Aug 1993",
+    "age": 32,
+    "npwp": "8877665544",
+    "gender": "Female",
+    "country": "Indonesia",
+    "province": "Jawa Barat",
+    "city": "Bandung",
+    "address": "Jl. Dago No. 45",
+    "languages": ["Indonesian", "Sundanese"],
+    "branches": [2]
+  },
+  {
+    "name": "I Wayan Putra",
+    "email": "wayan.putra@email.com",
+    "phone": "+6281334455667",
+    "birthday": "03 Jan 1988",
+    "age": 38,
+    "npwp": "7766554433",
+    "gender": "Male",
+    "country": "Indonesia",
+    "province": "Bali",
+    "city": "Denpasar",
+    "address": "Jl. Gatot Subroto No. 12",
+    "languages": ["Indonesian", "Balinese", "English"],
+    "branches": [2, 1]
+  },
+  {
+    "name": "Dewi Lestari",
+    "email": "dewi.lestari@email.com",
+    "phone": "+6281445566778",
+    "birthday": "14 Feb 1995",
+    "age": 30,
+    "npwp": "6655443322",
+    "gender": "Female",
+    "country": "Indonesia",
+    "province": "Jawa Timur",
+    "city": "Surabaya",
+    "address": "Jl. Tunjungan No. 88",
+    "languages": ["Indonesian", "Javanese"],
+    "branches": [3]
+  },
+  {
+    "name": "Andi Wijaya",
+    "email": "andi.wijaya@email.com",
+    "phone": "+6281556677889",
+    "birthday": "20 Nov 1992",
+    "age": 33,
+    "npwp": "5544332211",
+    "gender": "Male",
+    "country": "Indonesia",
+    "province": "Nusa Tenggara Barat",
+    "city": "Mataram",
+    "address": "Jl. Pejanggik No. 5",
+    "languages": ["Indonesian", "English"],
+    "branches": [1]
+  },
+  {
+    "name": "Rina Kartika",
+    "email": "rina.kartika@email.com",
+    "phone": "+6281667788990",
+    "birthday": "09 Jul 1997",
+    "age": 28,
+    "npwp": "4433221100",
+    "gender": "Female",
+    "country": "Indonesia",
+    "province": "Banten",
+    "city": "Tangerang",
+    "address": "BSD City, Cluster Foresta",
+    "languages": ["Indonesian", "English", "Mandarin"],
+    "branches": [1, 2, 3]
+  },
+  {
+    "name": "Eko Prasetyo",
+    "email": "eko.prasetyo@email.com",
+    "phone": "+6281778899001",
+    "birthday": "30 Mar 1985",
+    "age": 40,
+    "npwp": "3322110099",
+    "gender": "Male",
+    "country": "Indonesia",
+    "province": "DI Yogyakarta",
+    "city": "Sleman",
+    "address": "Jl. Kaliurang KM 5",
+    "languages": ["Indonesian", "Javanese", "Dutch"],
+    "branches": [2]
+  },
+  {
+    "name": "Maya Sari",
+    "email": "maya.sari@email.com",
+    "phone": "+6281889900112",
+    "birthday": "18 Dec 1994",
+    "age": 31,
+    "npwp": "2211009988",
+    "gender": "Female",
+    "country": "Indonesia",
+    "province": "Sumatera Utara",
+    "city": "Medan",
+    "address": "Jl. S. Parman No. 202",
+    "languages": ["Indonesian", "Hokkien"],
+    "branches": [3, 1]
+  },
+  {
+    "name": "Rizky Fauzi",
+    "email": "rizky.fauzi@email.com",
+    "phone": "+6281990011223",
+    "birthday": "05 Sep 1996",
+    "age": 29,
+    "npwp": "1100998877",
+    "gender": "Male",
+    "country": "Indonesia",
+    "province": "Sulawesi Selatan",
+    "city": "Makassar",
+    "address": "Jl. Panakkukang No. 15",
+    "languages": ["Indonesian", "Buginese"],
+    "branches": [1]
+  },
+  {
+    "name": "Lusi Natalia",
+    "email": "lusi.natalia@email.com",
+    "phone": "+6281001122334",
+    "birthday": "24 Dec 1991",
+    "age": 34,
+    "npwp": "0099887766",
+    "gender": "Female",
+    "country": "Indonesia",
+    "province": "Papua",
+    "city": "Jayapura",
+    "address": "Jl. Sentani No. 1",
+    "languages": ["Indonesian", "English"],
+    "branches": [2, 3]
+  }
 ]
 
-# Counter for new teacher IDs
-next_teacher_id = 104
+next_teacher_id = 102
 
-# API Key Authentication
+# --- Dependency ---
 async def verify_api_key(x_api_key: str = Header(...)):
-    """
-    Verify API Key from header
-    """
     if x_api_key != API_KEY:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid API Key"
-        )
+        raise HTTPException(status_code=401, detail="Invalid API Key")
     return x_api_key
 
-# Routes
+# --- Routes ---
+
 @app.get("/")
 async def root():
-    """
-    Welcome endpoint with API documentation
-    """
     return {
-        "message": "Branches API with API Key Authentication",
-        "version": "2.0.0",
-        "documentation": "/docs",
-        "authentication": "Use header: X-API-Key: your-api-key-here",
+        "message": "Branches API v2.0.0",
+        "auth": "Header: X-API-Key",
         "endpoints": {
-            "branches": "GET /api/branches - Get all branches",
-            "teachers_by_branch": "GET /api/branches/{branch_id}/teachers - Get teachers by branch",
-            "skills": "GET /api/skills - Get all skills",
-            "create_teacher": "POST /api/branches/{branch_id}/teachers - Create new teacher"
+            "GET /api/branches": "List all branches",
+            "GET /api/teachers": "List all teachers (Admin/Auth data)",
+            "POST /api/teachers": "Create one teacher assigned to many branches",
+            "GET /api/branches/{id}/teachers": "Filter teachers by branch membership"
         }
     }
 
 @app.get("/api/branches", response_model=List[Branch])
 async def get_all_branches(x_api_key: str = Depends(verify_api_key)):
-    """
-    Get All Branches
-    
-    Returns a list of all branches. Requires valid API Key in X-API-Key header.
-    """
     return branches_db
 
 @app.get("/api/branches/{branch_id}/teachers", response_model=List[Teacher])
 async def get_teachers_by_branch(branch_id: int, x_api_key: str = Depends(verify_api_key)):
-    """
-    Get Teachers by Branch ID
+    if not any(b["branch_id"] == branch_id for b in branches_db):
+        raise HTTPException(status_code=404, detail="Branch not found")
     
-    Returns a list of teachers assigned to the specified branch.
-    Requires valid API Key in X-API-Key header.
-    """
-    # Check if branch exists
-    branch_exists = any(branch["branch_id"] == branch_id for branch in branches_db)
-    if not branch_exists:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Branch with ID {branch_id} not found"
-        )
-    
-    # Get teachers for this branch
-    teachers = [teacher for teacher in teachers_db if teacher["branch_id"] == branch_id]
-    
-    if not teachers:
-        return []
-    
-    return teachers
+    # Filter: Return teacher if the branch_id exists in their branches list
+    return [t for t in teachers_db if branch_id in t.get("branches", [])]
+
+@app.get("/api/teachers", response_model=List[TeacherWithAuth])
+async def get_all_teachers(x_api_key: str = Depends(verify_api_key)):
+    return teachers_db
 
 @app.get("/api/skills", response_model=List[Skill])
 async def get_all_skills(x_api_key: str = Depends(verify_api_key)):
-    """
-    Get All Skills
-    
-    Returns a list of all available skills.
-    Requires valid API Key in X-API-Key header.
-    """
     return skills_db
 
-@app.post("/api/branches/{branch_id}/teachers", response_model=TeacherCreateResponse, status_code=status.HTTP_201_CREATED)
-async def create_teacher(branch_id: int, teacher: TeacherCreate, x_api_key: str = Depends(verify_api_key)):
-    """
-    Create Teacher to Branch
-    
-    Creates a new teacher and assigns them to the specified branch.
-    Optionally assign to additional branches.
-    Requires valid API Key in X-API-Key header.
-    """
+@app.post("/api/teachers", response_model=TeacherCreateResponse, status_code=status.HTTP_201_CREATED)
+async def create_teacher(teacher: TeacherCreate, x_api_key: str = Depends(verify_api_key)):
     global next_teacher_id
     
-    # Check if branch exists
-    branch_exists = any(branch["branch_id"] == branch_id for branch in branches_db)
-    if not branch_exists:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Branch with ID {branch_id} not found"
-        )
+    # Validation: Ensure all branch IDs provided exist
+    valid_ids = {b["branch_id"] for b in branches_db}
+    if not all(b_id in valid_ids for b_id in teacher.branches):
+        raise HTTPException(status_code=404, detail="One or more Branch IDs not found")
+
+    # Validation: Email uniqueness
+    if any(t["email"] == teacher.email for t in teachers_db):
+        raise HTTPException(status_code=400, detail="Email already registered")
     
-    # Check if additional branches exist
-    if teacher.additional_branches:
-        for add_branch_id in teacher.additional_branches:
-            branch_exists = any(branch["branch_id"] == add_branch_id for branch in branches_db)
-            if not branch_exists:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail=f"Additional branch with ID {add_branch_id} not found"
-                )
-    
-    # Check if email already exists
-    email_exists = any(t["email"] == teacher.email for t in teachers_db)
-    if email_exists:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Teacher with this email already exists"
-        )
-    
-    # Create new teacher for primary branch
+    # Single entry creation
     new_teacher = {
         "teacher_id": next_teacher_id,
-        "branch_id": branch_id,
+        "branches": teacher.branches,
         "name": teacher.name,
         "email": teacher.email,
         "phone": teacher.phone,
@@ -313,32 +329,24 @@ async def create_teacher(branch_id: int, teacher: TeacherCreate, x_api_key: str 
         "age": teacher.age,
         "npwp": teacher.npwp,
         "gender": teacher.gender,
-        "region": teacher.region,
+        "country": teacher.country,
+        "province": teacher.province,
+        "city": teacher.city,
         "address": teacher.address,
         "languages": teacher.languages,
-        "skills": []  # Will be empty for new teachers, can be updated later
+        "skills": []
     }
     
     teachers_db.append(new_teacher)
     
-    # Create entries for additional branches (same teacher, different branch_id)
-    assigned_branches = [branch_id]
-    if teacher.additional_branches:
-        for add_branch_id in teacher.additional_branches:
-            additional_teacher = new_teacher.copy()
-            additional_teacher["branch_id"] = add_branch_id
-            teachers_db.append(additional_teacher)
-            assigned_branches.append(add_branch_id)
-    
-    response = {
+    res = {
         "message": "Teacher created successfully",
         "teacher_id": next_teacher_id,
-        "assigned_branches": assigned_branches
+        "assigned_branches": teacher.branches
     }
     
     next_teacher_id += 1
-    
-    return response
+    return res
 
 if __name__ == "__main__":
     import uvicorn
