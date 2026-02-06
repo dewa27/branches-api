@@ -15,7 +15,7 @@ app.add_middleware(
 )
 
 # --- Configuration ---
-API_KEY = "your-api-key-here"
+API_KEY = "775b22ab-01c7-4834-a8c8-df0cb0460c77"
 
 # --- Models ---
 class Branch(BaseModel):
