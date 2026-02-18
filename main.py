@@ -111,6 +111,7 @@ skills_db = [
 
 teachers_db = [
   {
+    "teacher_id":96,
     "name": "Budi Santoso",
     "email": "budi.santoso@email.com",
     "phone": "+6281122334455",
@@ -126,6 +127,7 @@ teachers_db = [
     "branches": [1, 3]
   },
   {
+    "teacher_id":97,
     "name": "Siti Aminah",
     "email": "siti.aminah@email.com",
     "phone": "+6281223344556",
@@ -141,6 +143,7 @@ teachers_db = [
     "branches": [2]
   },
   {
+    "teacher_id":98,
     "name": "I Wayan Putra",
     "email": "wayan.putra@email.com",
     "phone": "+6281334455667",
@@ -156,6 +159,7 @@ teachers_db = [
     "branches": [2, 1]
   },
   {
+    "teacher_id":99,
     "name": "Dewi Lestari",
     "email": "dewi.lestari@email.com",
     "phone": "+6281445566778",
@@ -171,6 +175,7 @@ teachers_db = [
     "branches": [3]
   },
   {
+    "teacher_id":100,
     "name": "Andi Wijaya",
     "email": "andi.wijaya@email.com",
     "phone": "+6281556677889",
@@ -186,6 +191,7 @@ teachers_db = [
     "branches": [1]
   },
   {
+    "teacher_id":101,
     "name": "Rina Kartika",
     "email": "rina.kartika@email.com",
     "phone": "+6281667788990",
@@ -201,6 +207,7 @@ teachers_db = [
     "branches": [1, 2, 3]
   },
   {
+    "teacher_id":102,
     "name": "Eko Prasetyo",
     "email": "eko.prasetyo@email.com",
     "phone": "+6281778899001",
@@ -216,6 +223,7 @@ teachers_db = [
     "branches": [2]
   },
   {
+    "teacher_id":103,
     "name": "Maya Sari",
     "email": "maya.sari@email.com",
     "phone": "+6281889900112",
@@ -231,6 +239,7 @@ teachers_db = [
     "branches": [3, 1]
   },
   {
+    "teacher_id":104,
     "name": "Rizky Fauzi",
     "email": "rizky.fauzi@email.com",
     "phone": "+6281990011223",
@@ -246,6 +255,7 @@ teachers_db = [
     "branches": [1]
   },
   {
+    "teacher_id":105,
     "name": "Lusi Natalia",
     "email": "lusi.natalia@email.com",
     "phone": "+6281001122334",
@@ -262,7 +272,7 @@ teachers_db = [
   }
 ]
 
-next_teacher_id = 102
+next_teacher_id = 106
 
 # --- Dependency ---
 async def verify_api_key(x_api_key: str = Header(...)):
