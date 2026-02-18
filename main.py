@@ -49,7 +49,7 @@ class Teacher(BaseModel):
     city: str
     address: str
     languages: List[str]
-    skills: List[Skill]
+    skills: List[int]
 
 class TeacherWithAuth(Teacher):
     username: str
@@ -124,7 +124,8 @@ teachers_db = [
     "city": "Jakarta Selatan",
     "address": "Jl. Kemang Raya No. 10",
     "languages": ["Indonesian", "English"],
-    "branches": [1, 3]
+    "branches": [1, 3],
+    "skills":[1,2]
   },
   {
     "teacher_id":97,
@@ -140,7 +141,8 @@ teachers_db = [
     "city": "Bandung",
     "address": "Jl. Dago No. 45",
     "languages": ["Indonesian", "Sundanese"],
-    "branches": [2]
+    "branches": [2],
+    "skills":[1,2]
   },
   {
     "teacher_id":98,
@@ -156,7 +158,8 @@ teachers_db = [
     "city": "Denpasar",
     "address": "Jl. Gatot Subroto No. 12",
     "languages": ["Indonesian", "Balinese", "English"],
-    "branches": [2, 1]
+    "branches": [2, 1],
+    "skills":[1]
   },
   {
     "teacher_id":99,
@@ -172,7 +175,8 @@ teachers_db = [
     "city": "Surabaya",
     "address": "Jl. Tunjungan No. 88",
     "languages": ["Indonesian", "Javanese"],
-    "branches": [3]
+    "branches": [3],
+    "skills":[3]
   },
   {
     "teacher_id":100,
@@ -188,7 +192,8 @@ teachers_db = [
     "city": "Mataram",
     "address": "Jl. Pejanggik No. 5",
     "languages": ["Indonesian", "English"],
-    "branches": [1]
+    "branches": [1],
+    "skills":[1]
   },
   {
     "teacher_id":101,
@@ -204,7 +209,8 @@ teachers_db = [
     "city": "Tangerang",
     "address": "BSD City, Cluster Foresta",
     "languages": ["Indonesian", "English", "Mandarin"],
-    "branches": [1, 2, 3]
+    "branches": [1, 2, 3],
+    "skills":[1,2,3]
   },
   {
     "teacher_id":102,
@@ -220,7 +226,8 @@ teachers_db = [
     "city": "Sleman",
     "address": "Jl. Kaliurang KM 5",
     "languages": ["Indonesian", "Javanese", "Dutch"],
-    "branches": [2]
+    "branches": [2],
+    "skills":[1,2,3]
   },
   {
     "teacher_id":103,
@@ -236,7 +243,8 @@ teachers_db = [
     "city": "Medan",
     "address": "Jl. S. Parman No. 202",
     "languages": ["Indonesian", "Hokkien"],
-    "branches": [3, 1]
+    "branches": [3, 1],
+    "skills":[1,2,3]
   },
   {
     "teacher_id":104,
@@ -252,7 +260,8 @@ teachers_db = [
     "city": "Makassar",
     "address": "Jl. Panakkukang No. 15",
     "languages": ["Indonesian", "Buginese"],
-    "branches": [1]
+    "branches": [1],
+    "skills":[1,2,3]
   },
   {
     "teacher_id":105,
@@ -268,7 +277,8 @@ teachers_db = [
     "city": "Jayapura",
     "address": "Jl. Sentani No. 1",
     "languages": ["Indonesian", "English"],
-    "branches": [2, 3]
+    "branches": [2, 3],
+    "skills":[1,2,3]
   }
 ]
 
